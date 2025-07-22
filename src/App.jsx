@@ -2,7 +2,7 @@
 // import dictionary from './dictionary_alpha_arrays.json';
 import Grid from '@mui/material/Grid';
 import dict from '../public/words_dictionary.json';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -73,6 +73,20 @@ function App() {
                 <Typography variant="body2">
                   Enter a word that begins with the highlighted letter
                 </Typography>
+                <Grid size={3}>
+                </Grid>
+                <Grid container spacing={2}>
+                  <Grid size={3}>
+                    <Typography variant="h6" component="div">
+                      Current Score: {gameObj.score}
+                    </Typography>
+                  </Grid>
+                  <Grid size={3}>
+                    <Typography variant="h6" component="div">
+                      Highest Score: {gameObj.highScore}
+                    </Typography>
+                  </Grid>
+                </Grid>
                 {timeLeft >= 0 &&
                   <Typography variant="h3">{timeLeft} s</Typography>
                 }
@@ -146,7 +160,7 @@ function App() {
     let l = word[idx];
     setLetter(l);
     setWordIdx(idx);
-    let timer = setInterval(() => { setTimeLeft(prev => { if (prev > 0) return prev - 1; else resetTimer()}) }, 1000)
+    let timer = setInterval(() => { setTimeLeft(prev => { if (prev > 0) return prev - 1; else resetTimer() }) }, 1000)
     setWordTimer(timer);
   }
   function pick() {
@@ -163,6 +177,7 @@ function App() {
     if (typedWord && typedWord.length >= 3 && typedWord[0] === letter && allWords.has(typedWord.toLowerCase())) {
       if (gameObj.wordsTyped.includes(typedWord.toLowerCase())) {
         setRetyped(true);
+        setTypedWord('');
         return;
       }
       else {
@@ -190,11 +205,11 @@ function App() {
     setRetyped(false);
   }
   function resetTimer() {
-      let gObj = gameObj;
-      gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
-      gObj.active = false;
-      gObj.wordsTyped = [];
-      gObj.letter = '';
+    let gObj = gameObj;
+    gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
+    gObj.active = false;
+    gObj.wordsTyped = [];
+    gObj.letter = '';
   }
 }
 
