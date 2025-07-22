@@ -1,7 +1,7 @@
 // import './App.css'
 // import dictionary from './dictionary_alpha_arrays.json';
 import Grid from '@mui/material/Grid';
-import dict from './words_dictionary.json';
+import dict from '../public/words_dictionary.json';
 import { useEffect, useState } from 'react';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
