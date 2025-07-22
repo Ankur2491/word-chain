@@ -25,15 +25,6 @@ function App() {
   const [typedWord, setTypedWord] = useState('');
   const [allWords, setAllWords] = useState(null);
   const [reTyped, setRetyped] = useState(false);
-  useEffect(() => {
-    if (timeLeft === 0) {
-      let gObj = gameObj;
-      gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
-      gObj.active = false;
-      gObj.wordsTyped = [];
-      gObj.letter = '';
-    }
-  }, [timeLeft])
   return (
     <>
       <br />
@@ -83,7 +74,7 @@ function App() {
                   Enter a word that begins with the highlighted letter
                 </Typography>
                 {timeLeft >= 0 &&
-                 <Typography variant="h3">{timeLeft} s</Typography>
+                  <Typography variant="h3">{timeLeft} s</Typography>
                 }
                 <Typography variant="h2">
                   {gameWord}
@@ -119,10 +110,10 @@ function App() {
           </Grid>
         </Grid>
       }
-      {reTyped===true && 
+      {reTyped === true &&
         <Snackbar
           open={true}
-          anchorOrigin={{vertical:'top', horizontal:'center'}}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           autoHideDuration={5000}
           onClose={handleClose}
           message="You have already typed this word."
@@ -155,7 +146,7 @@ function App() {
     let l = word[idx];
     setLetter(l);
     setWordIdx(idx);
-    let timer = setInterval(() => setTimeLeft(prev => prev > 0 && prev - 1), 1000)
+    let timer = setInterval(() => { setTimeLeft(prev => { if (prev > 0) return prev - 1; else resetTimer()}) }, 1000)
     setWordTimer(timer);
   }
   function pick() {
@@ -197,6 +188,13 @@ function App() {
   }
   function handleClose(e) {
     setRetyped(false);
+  }
+  function resetTimer() {
+      let gObj = gameObj;
+      gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
+      gObj.active = false;
+      gObj.wordsTyped = [];
+      gObj.letter = '';
   }
 }
 
