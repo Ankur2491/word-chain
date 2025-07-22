@@ -26,7 +26,7 @@ function App() {
   const [allWords, setAllWords] = useState(null);
   const [reTyped, setRetyped] = useState(false);
   useEffect(() => {
-    if (timeLeft == 0) {
+    if (timeLeft === 0) {
       let gObj = gameObj;
       gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
       gObj.active = false;
@@ -167,11 +167,6 @@ function App() {
     let wordIdx = Math.floor(Math.random() * words.length);
     return words[wordIdx];
   }
-  function pickFromLetter() {
-    let filteredWordList = [...allWords].filter(all => all[0] === letter);
-    let wordIdx = Math.floor(Math.random() * filteredWordList.length);
-    return filteredWordList[wordIdx];
-  }
   function handleSubmit(e) {
     e.preventDefault();
     if (typedWord && typedWord.length >= 3 && typedWord[0] === letter && allWords.has(typedWord.toLowerCase())) {
@@ -191,7 +186,6 @@ function App() {
         let go = gameObj;
         go.score = go.score + 1;
         setGameObj(go);
-        // let w = pickFromLetter(gameWord);
         setGameWord(typedWord);
         setWordIdx(0);
         setAlphabet(0, typedWord);
