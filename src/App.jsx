@@ -157,6 +157,9 @@ function App() {
     setAlphabet(0, randomWord);
   }
   function setAlphabet(idx, word) {
+    if(wordTimer) {
+      clearInterval(wordTimer);
+    }
     let l = word[idx];
     setLetter(l);
     setWordIdx(idx);
@@ -187,17 +190,18 @@ function App() {
       setTypedWord('');
       clearInterval(wordTimer);
       setTimeLeft(20);
-      setWordIdx(prev => prev + 1);
+      let newIdx = wordIdx+1;
+      setWordIdx(newIdx);
       if (wordIdx === gameWord.length - 1) {
-        let go = gameObj;
-        go.score = go.score + 1;
+        let go = {...gameObj};
+        go.score += 1;
         setGameObj(go);
         setGameWord(typedWord);
         setWordIdx(0);
         setAlphabet(0, typedWord);
       }
       else {
-        setAlphabet(wordIdx + 1, gameWord);
+        setAlphabet(newIdx, gameWord);
       }
     }
   }
