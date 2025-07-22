@@ -1,16 +1,14 @@
 // import './App.css'
 // import dictionary from './dictionary_alpha_arrays.json';
 import Grid from '@mui/material/Grid';
-import dict from './words_dictionary.json';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import Snackbar from '@mui/material/Snackbar';
-
-const words = Object.keys(dict);
+import axios from 'axios';
 
 function App() {
 
@@ -25,6 +23,10 @@ function App() {
   const [typedWord, setTypedWord] = useState('');
   const [allWords, setAllWords] = useState(null);
   const [reTyped, setRetyped] = useState(false);
+  const [words, setWords] = useState(null);
+  useEffect(()=>{
+    axios.get(`https://raw.githubusercontent.com/Ankur2491/assets/refs/heads/main/words_dictionary.json`).then(response=>setWords(Object.keys(response.data)));
+  },[])
   return (
     <>
       <br />
