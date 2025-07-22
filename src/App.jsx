@@ -27,13 +27,11 @@ function App() {
   const [reTyped, setRetyped] = useState(false);
   useEffect(() => {
     if (timeLeft == 0) {
-      setTypedWord('')
       let gObj = gameObj;
       gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
       gObj.active = false;
       gObj.wordsTyped = [];
       gObj.letter = '';
-      setGameObj(gObj);
     }
   }, [timeLeft])
   return (
