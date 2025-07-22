@@ -154,15 +154,6 @@ function App() {
     setAlphabet(0, randomWord);
   }
   function setAlphabet(idx, word) {
-    if (idx == word.length) {
-      let go = gameObj;
-      go.score = go.score + 1;
-      setGameObj(go);
-      let w = pickFromLetter();
-      setGameWord(w);
-      setWordIdx(0);
-      setAlphabet(0, w);
-    }
     let l = word[idx];
     setLetter(l);
     setWordIdx(idx);
