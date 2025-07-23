@@ -41,12 +41,14 @@ function App() {
             </Typography>
             <br />
             <Grid container spacing={2}>
+              <form onSubmit={play}>
               <Grid size={2}>
                 <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} />
               </Grid>
               <Grid size={2}>
                 <Button variant='contained' onClick={play}>Play</Button>
               </Grid>
+              </form>  
             </Grid>
           </CardContent>
         </Card>
