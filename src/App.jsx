@@ -14,7 +14,7 @@ function App() {
 
   const [showLogin, setShowLogin] = useState(true);
   const [userName, setUserName] = useState(null);
-  const [gameObj, setGameObj] = useState(null);
+  const [over, setOver] = useState(null);
   const [timeLeft, setTimeLeft] = useState(20);
   const [wordTimer, setWordTimer] = useState(null);
   const [letter, setLetter] = useState(null);
@@ -24,9 +24,24 @@ function App() {
   const [allWords, setAllWords] = useState(null);
   const [reTyped, setRetyped] = useState(false);
   const [words, setWords] = useState(null);
-  useEffect(()=>{
-    axios.get(`https://raw.githubusercontent.com/Ankur2491/assets/refs/heads/main/words_dictionary.json`).then(response=>setWords(Object.keys(response.data)));
-  },[])
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [wordsTyped, setWordsTyped] = useState([]);
+  const [active, setActive] = useState(null);
+  useEffect(() => {
+    axios.get(`https://raw.githubusercontent.com/Ankur2491/assets/refs/heads/main/words_dictionary.json`).then(response => setWords(Object.keys(response.data)));
+  }, [])
+  useEffect(()=> {
+    if(timeLeft<=0) {
+      setActive(false);
+      setWordsTyped([]);
+      setLetter('');
+      setOver(true);
+      if (wordTimer) {
+      clearInterval(wordTimer);
+    }
+    }
+  },[timeLeft])
   return (
     <>
       <br />
@@ -40,19 +55,21 @@ function App() {
               To begin, please enter your name below and click on play.
             </Typography>
             <br />
-            <Grid container spacing={2}>
-              <Grid size={2}>
-                <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} />
+            <form onSubmit={play}>
+              <Grid container spacing={2}>
+                <Grid size={2}>
+                  <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} />
+                </Grid>
+                <Grid size={2}>
+                  <Button variant='contained' onClick={play}>Play</Button>
+                </Grid>
               </Grid>
-              <Grid size={2}>
-                <Button variant='contained' onClick={play}>Play</Button>
-              </Grid>
-            </Grid>
+            </form>
           </CardContent>
         </Card>
       }
       {
-        gameObj !== null && gameObj.active == true &&
+        active == true &&
         <Grid container spacing={2}>
           <Grid size={3}>
             <Card>
@@ -61,7 +78,7 @@ function App() {
                   Words Typed
                 </Typography>
                 <textarea cols={35} rows={20} readOnly value=
-                  {gameObj.wordsTyped.map(word =>
+                  {wordsTyped.map(word =>
                     word)} />
               </CardContent>
             </Card>
@@ -80,12 +97,12 @@ function App() {
                 <Grid container spacing={2}>
                   <Grid size={3}>
                     <Typography variant="h6" component="div">
-                      Current Score: {gameObj.score}
+                      Current Score: {score}
                     </Typography>
                   </Grid>
                   <Grid size={3}>
                     <Typography variant="h6" component="div">
-                      Highest Score: {gameObj.highScore}
+                      Highest Score: {highScore}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -106,7 +123,7 @@ function App() {
           </Grid>
         </Grid>
       }
-      {gameObj && gameObj.active == false &&
+      {over && over === true &&
         <Grid container spacing={2}>
           <Grid size={3}>
             <Card>
@@ -115,10 +132,10 @@ function App() {
                   Game Over!
                 </Typography>
                 <Typography variant="body2">
-                  Score: {gameObj.score}
+                  Score: {score}
                 </Typography>
                 <Typography variant="body2">
-                  Highest Score: {gameObj.highScore}
+                  Highest Score: {highScore}
                 </Typography>
                 <Button variant='contained' onClick={play}>Play</Button>
               </CardContent>
@@ -139,33 +156,24 @@ function App() {
   )
   function play() {
     setShowLogin(false);
+    setOver(false);
+    setTimeLeft(20);
     localStorage.setItem('userName', userName);
     let randomWord = pick();
     setGameWord(randomWord);
-    let gObject = {
-      "word": randomWord,
-      "score": 0,
-      "highScore": 0,
-      "wordsTyped": [],
-      "active": true
-    }
-    if (gameObj !== null) {
-      gObject.highScore = gameObj.highScore;
-      clearInterval(wordTimer);
-      setTimeLeft(20);
-    }
-    setGameObj(gObject);
+    setScore(0);
+    setActive(true);
     setWordIdx(0);
     setAlphabet(0, randomWord);
   }
   function setAlphabet(idx, word) {
-    if(wordTimer) {
+    if (wordTimer) {
       clearInterval(wordTimer);
     }
     let l = word[idx];
     setLetter(l);
     setWordIdx(idx);
-    let timer = setInterval(() => { setTimeLeft(prev => { if (prev > 0) return prev - 1; else resetTimer() }) }, 1000)
+    let timer = setInterval(() => setTimeLeft(prev => prev - 1) , 1000)
     setWordTimer(timer);
   }
   function pick() {
@@ -180,24 +188,26 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
     if (typedWord && typedWord.length >= 3 && typedWord[0] === letter && allWords.has(typedWord.toLowerCase())) {
-      if (gameObj.wordsTyped.includes(typedWord.toLowerCase())) {
+      if (wordsTyped.includes(typedWord.toLowerCase())) {
         setRetyped(true);
         setTypedWord('');
         return;
       }
       else {
-        let wordsTyped = gameObj.wordsTyped;
-        wordsTyped.push(typedWord.toLowerCase());
+        let wt = wordsTyped;
+        wt.push(typedWord.toLowerCase());
       }
       setTypedWord('');
       clearInterval(wordTimer);
       setTimeLeft(20);
-      let newIdx = wordIdx+1;
+      let newIdx = wordIdx + 1;
       setWordIdx(newIdx);
       if (wordIdx === gameWord.length - 1) {
-        let go = {...gameObj};
-        go.score += 1;
-        setGameObj(go);
+        let sc = score+1;
+        let hs = highScore;
+        hs = sc > hs ? sc : hs
+        setScore(sc);
+        setHighScore(hs);
         setGameWord(typedWord);
         setWordIdx(0);
         setAlphabet(0, typedWord);
@@ -209,13 +219,6 @@ function App() {
   }
   function handleClose(e) {
     setRetyped(false);
-  }
-  function resetTimer() {
-    let gObj = gameObj;
-    gObj.highScore = gObj.score > gObj.highScore ? gObj.score : gObj.highScore
-    gObj.active = false;
-    gObj.wordsTyped = [];
-    gObj.letter = '';
   }
 }
 
