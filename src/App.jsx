@@ -76,8 +76,8 @@ function App() {
       {
         active == true &&
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={3}>
-            <Grid size={12}>
+          <Grid container spacing={2}>
+            <Grid size={4}>
               <Typography variant="h6" component="div">
                 Words Typed
               </Typography>
@@ -95,7 +95,7 @@ function App() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size="grow">
+            <Grid size={8}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -107,12 +107,12 @@ function App() {
                   <Grid size={3}>
                   </Grid>
                   <Grid container spacing={2}>
-                    <Grid size={3}>
+                    <Grid size="grow">
                       <Typography variant="h6" component="div">
                         Current Score: {score}
                       </Typography>
                     </Grid>
-                    <Grid size={3}>
+                    <Grid size="grow">
                       <Typography variant="h6" component="div">
                         Highest Score: {highScore}
                       </Typography>
@@ -121,14 +121,14 @@ function App() {
                   {timeLeft >= 0 &&
                     <Typography variant="h3">{timeLeft} s</Typography>
                   }
-                  <Typography variant="h2">
+                  <Typography variant="h4">
                     {gameWord}
                   </Typography>
                   <Typography variant='h4'>
                     {letter && letter.toUpperCase()}
                   </Typography>
                   <form onSubmit={handleSubmit}>
-                    <TextField id="outlined-basic" label="enter word" variant="outlined" size="small" value={typedWord} onChange={(e) => setTypedWord(e.target.value.toLowerCase())} />
+                    <TextField id="outlined-basic" autoComplete='off' label="enter word" variant="outlined" size="small" value={typedWord} onChange={(e) => setTypedWord(e.target.value.toLowerCase())} />
                   </form>
                 </CardContent>
               </Card>
@@ -162,7 +162,7 @@ function App() {
       {reTyped === true &&
         <Snackbar
           open={true}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           autoHideDuration={5000}
           onClose={handleClose}
           message="You have already typed this word."
