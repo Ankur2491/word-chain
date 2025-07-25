@@ -11,6 +11,7 @@ import Card from '@mui/material/Card';
 import Snackbar from '@mui/material/Snackbar';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 import axios from 'axios';
 
 function App() {
@@ -128,6 +129,7 @@ function App() {
                     {letter && letter.toUpperCase()}
                   </Typography>
                   <form onSubmit={handleSubmit}>
+                    {reTyped === true && <Alert variant="filled"  severity="warning">You have already typed this word.</Alert>}
                     <TextField id="outlined-basic" autoComplete='off' label="enter word" variant="outlined" size="small" value={typedWord} onChange={(e) => setTypedWord(e.target.value.toLowerCase())} />
                   </form>
                 </CardContent>
@@ -162,7 +164,7 @@ function App() {
       {reTyped === true &&
         <Snackbar
           open={true}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           autoHideDuration={5000}
           onClose={handleClose}
           message="You have already typed this word."
