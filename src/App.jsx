@@ -1,6 +1,7 @@
 // import './App.css'
 // import dictionary from './dictionary_alpha_arrays.json';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
@@ -8,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import Snackbar from '@mui/material/Snackbar';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import axios from 'axios';
 
 function App() {
@@ -31,117 +34,130 @@ function App() {
   useEffect(() => {
     axios.get(`https://raw.githubusercontent.com/Ankur2491/assets/refs/heads/main/words_dictionary.json`).then(response => setWords(Object.keys(response.data)));
   }, [])
-  useEffect(()=> {
-    if(timeLeft<=0) {
+  useEffect(() => {
+    if (timeLeft <= 0) {
       setActive(false);
       setWordsTyped([]);
       setLetter('');
       setOver(true);
       if (wordTimer) {
-      clearInterval(wordTimer);
+        clearInterval(wordTimer);
+      }
     }
-    }
-  },[timeLeft])
+  }, [timeLeft])
   return (
     <>
       <br />
       {showLogin &&
-        <Card sx={{ minWidth: 275 }}>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Welcome to Word Chain
-            </Typography>
-            <Typography variant="body2">
-              To begin, please enter your name below and click on play.
-            </Typography>
-            <br />
-            <form onSubmit={play}>
-              <Grid container spacing={2}>
-                <Grid size={2}>
-                  <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} />
-                </Grid>
-                <Grid size={2}>
-                  <Button variant='contained' onClick={play}>Play</Button>
-                </Grid>
-              </Grid>
-            </form>
-          </CardContent>
-        </Card>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={3}>
+            <Grid size="grow">
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    Welcome to Word Chain
+                  </Typography>
+                  <Typography variant="body2">
+                    To begin, please enter your name below and click on play.
+                  </Typography>
+                  <br />
+                  <form onSubmit={play}>
+                    <Grid size="grow">
+                      <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} />
+                      <Button variant='contained' onClick={play} sx={{ marginLeft: '20px' }}>Play</Button>
+                    </Grid>
+                  </form>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
       }
       {
         active == true &&
-        <Grid container spacing={2}>
-          <Grid size={3}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  Words Typed
-                </Typography>
-                <textarea cols={35} rows={20} readOnly value=
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={3}>
+            <Grid size={12}>
+              <Typography variant="h6" component="div">
+                Words Typed
+              </Typography>
+              <Card sx={{ overflowY: 'auto', maxHeight: 200 }}>
+                <CardContent>
+                  {/* <textarea cols={25} rows={20} readOnly value=
                   {wordsTyped.map(word =>
-                    word)} />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid size={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  Welcome {userName}!
-                </Typography>
-                <Typography variant="body2">
-                  Enter a word that begins with the highlighted letter
-                </Typography>
-                <Grid size={3}>
-                </Grid>
-                <Grid container spacing={2}>
+                    word)} /> */}
+                  <Stack spacing={{ xs: 1, sm: 2 }}
+                    direction="row"
+                    useFlexGap
+                    sx={{ flexWrap: 'wrap' }}>
+                    {wordsTyped.map(word => <Chip label={word} color="primary" size="small" />)}
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid size="grow">
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    Welcome {userName}!
+                  </Typography>
+                  <Typography variant="body2">
+                    Enter a word that begins with the highlighted letter
+                  </Typography>
                   <Grid size={3}>
-                    <Typography variant="h6" component="div">
-                      Current Score: {score}
-                    </Typography>
                   </Grid>
-                  <Grid size={3}>
-                    <Typography variant="h6" component="div">
-                      Highest Score: {highScore}
-                    </Typography>
+                  <Grid container spacing={2}>
+                    <Grid size={3}>
+                      <Typography variant="h6" component="div">
+                        Current Score: {score}
+                      </Typography>
+                    </Grid>
+                    <Grid size={3}>
+                      <Typography variant="h6" component="div">
+                        Highest Score: {highScore}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-                {timeLeft >= 0 &&
-                  <Typography variant="h3">{timeLeft} s</Typography>
-                }
-                <Typography variant="h2">
-                  {gameWord}
-                </Typography>
-                <Typography variant='h4'>
-                  {letter && letter.toUpperCase()}
-                </Typography>
-                <form onSubmit={handleSubmit}>
-                  <TextField id="outlined-basic" label="enter word" variant="outlined" size="small" value={typedWord} onChange={(e) => setTypedWord(e.target.value.toLowerCase())} />
-                </form>
-              </CardContent>
-            </Card>
+                  {timeLeft >= 0 &&
+                    <Typography variant="h3">{timeLeft} s</Typography>
+                  }
+                  <Typography variant="h2">
+                    {gameWord}
+                  </Typography>
+                  <Typography variant='h4'>
+                    {letter && letter.toUpperCase()}
+                  </Typography>
+                  <form onSubmit={handleSubmit}>
+                    <TextField id="outlined-basic" label="enter word" variant="outlined" size="small" value={typedWord} onChange={(e) => setTypedWord(e.target.value.toLowerCase())} />
+                  </form>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       }
       {over && over === true &&
-        <Grid container spacing={2}>
-          <Grid size={3}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  Game Over!
-                </Typography>
-                <Typography variant="body2">
-                  Score: {score}
-                </Typography>
-                <Typography variant="body2">
-                  Highest Score: {highScore}
-                </Typography>
-                <Button variant='contained' onClick={play}>Play</Button>
-              </CardContent>
-            </Card>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid size="grow">
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    Game Over!
+                  </Typography>
+                  <Typography variant="body2">
+                    Score: {score}
+                  </Typography>
+                  <Typography variant="body2">
+                    Highest Score: {highScore}
+                  </Typography>
+                  <br />
+                  <Button variant='contained' onClick={play}>Play</Button>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       }
       {reTyped === true &&
         <Snackbar
@@ -173,7 +189,7 @@ function App() {
     let l = word[idx];
     setLetter(l);
     setWordIdx(idx);
-    let timer = setInterval(() => setTimeLeft(prev => prev - 1) , 1000)
+    let timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000)
     setWordTimer(timer);
   }
   function pick() {
@@ -203,7 +219,7 @@ function App() {
       let newIdx = wordIdx + 1;
       setWordIdx(newIdx);
       if (wordIdx === gameWord.length - 1) {
-        let sc = score+1;
+        let sc = score + 1;
         let hs = highScore;
         hs = sc > hs ? sc : hs
         setScore(sc);
