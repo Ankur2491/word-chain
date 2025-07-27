@@ -1,4 +1,4 @@
-// import './App.css'
+import './App.css'
 // import dictionary from './dictionary_alpha_arrays.json';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -78,13 +78,13 @@ function App() {
         active == true &&
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid size={5}>
+            <Grid size={{xs:5, md:6}}>
               <Typography variant="h6" component="div">
                 Words Typed
               </Typography>
               <Card sx={{maxHeight: 400 }}>
                 <CardContent>
-                  <textarea cols={15} rows={20} readOnly value=
+                  <textarea className='textArea' cols={15} rows={20} readOnly value=
                   {wordsTyped.map(word =>
                     word)} />
                   {/* <Stack spacing={{ xs: 1, sm: 2 }}
@@ -96,7 +96,7 @@ function App() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={7}>
+            <Grid size={{xs:7, md:6}}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
