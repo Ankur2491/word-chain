@@ -64,8 +64,8 @@ function App() {
                   <br />
                   <form onSubmit={play}>
                     <Grid size="grow">
-                      <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} />
-                      <Button variant='contained' onClick={play} sx={{ marginLeft: '20px' }}>Play</Button>
+                      <TextField id="outlined-basic" label="enter your name" variant="outlined" size="small" onChange={(e) => setUserName(e.target.value)} sx={{marginRight:'20px', paddingBottom:'10px'}} />
+                      <Button variant='contained' onClick={play}>Play</Button>
                     </Grid>
                   </form>
                 </CardContent>
@@ -129,7 +129,7 @@ function App() {
                     {letter && letter.toUpperCase()}
                   </Typography>
                   <form onSubmit={handleSubmit}>
-                    {reTyped === true && <Alert variant="filled"  severity="warning">You have already typed this word.</Alert>}
+                    {reTyped === true && <Alert variant="filled"  severity="warning" sx={{marginBottom:'10px'}}>You have already typed this word.</Alert>}
                     <TextField id="outlined-basic" autoComplete='off' label="enter word" variant="outlined" size="small" value={typedWord} onChange={(e) => setTypedWord(e.target.value.toLowerCase())} />
                   </form>
                 </CardContent>
