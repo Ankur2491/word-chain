@@ -78,25 +78,25 @@ function App() {
         active == true &&
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid size={4}>
+            <Grid size={5}>
               <Typography variant="h6" component="div">
                 Words Typed
               </Typography>
-              <Card sx={{ overflowY: 'auto', maxHeight: 200 }}>
+              <Card sx={{maxHeight: 400 }}>
                 <CardContent>
-                  {/* <textarea cols={25} rows={20} readOnly value=
+                  <textarea cols={15} rows={20} readOnly value=
                   {wordsTyped.map(word =>
-                    word)} /> */}
-                  <Stack spacing={{ xs: 1, sm: 2 }}
+                    word)} />
+                  {/* <Stack spacing={{ xs: 1, sm: 2 }}
                     direction="row"
                     useFlexGap
                     sx={{ flexWrap: 'wrap' }}>
                     {wordsTyped.map(word => <Chip label={word} color="primary" size="small" />)}
-                  </Stack>
+                  </Stack> */}
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={8}>
+            <Grid size={7}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -214,6 +214,7 @@ function App() {
       else {
         let wt = wordsTyped;
         wt.push(typedWord.toLowerCase());
+        wt = wt.sort();
       }
       setTypedWord('');
       clearInterval(wordTimer);
