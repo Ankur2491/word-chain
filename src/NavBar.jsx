@@ -34,18 +34,18 @@ export default function NavBar() {
           >
             Word-Chain
           </Typography>
-          {/* <Tooltip title="Connect with me">
+          <Tooltip title="Connect with me">
             <LinkedInIcon sx={{ cursor: 'pointer' }}
               onClick={goToMyLinkedIn}
             >
             </LinkedInIcon>
-          </Tooltip> */}
-                    <Tooltip title="My GitHub">
+          </Tooltip>
+                    {/* <Tooltip title="My GitHub">
             <GitHubIcon sx={{ cursor: 'pointer' }}
               onClick={goToMyGitHub}
             >
             </GitHubIcon>
-          </Tooltip>
+          </Tooltip> */}
         </Toolbar>
       </Container>
     </AppBar>
